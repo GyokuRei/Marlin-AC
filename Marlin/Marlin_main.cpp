@@ -5599,6 +5599,9 @@ void home_all_axes() { gcode_G28(true); }
           #endif
 
           switch (probe_points) {
+            case 0: // 1 point calibration
+              break;
+
             case 1: // 1 point calibration
               test_precision = 0.00; // forced end
               LOOP_XYZ(axis) e_delta[axis] = Z1(0);
