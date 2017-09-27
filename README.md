@@ -17,6 +17,7 @@ Marlin-AC is in constant development to make it perform better and more stable b
 
 1.1.5b-AC   <img src="pic/waiting.png">
 - new intermediate point calibration
+- extended grids (P8-9)
 
 1.1.5a-AC   <img src="pic/bugfix.png">
 - simplified matrix names
