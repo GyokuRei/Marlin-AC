@@ -5424,7 +5424,7 @@ void home_all_axes() { gcode_G28(true); }
                  _7p_half_circle      = probe_points == 3,
                  _7p_7p_calibration   = probe_points == 4 || probe_points == 5,
                  _7p_extra_center     = probe_points == 5 || probe_points == 8,
-                 _7p_no_center        = probe_points == 6 || probe_points == 9,
+                 _7p_no_center        = probe_points == 3 || probe_points == 6 || probe_points == 9,
                  _7p_double_circle    = probe_points >= 5 && probe_points <= 7,
                  _7p_tripple_circle   = probe_points >= 8,
                  _7p_intermediate     = probe_points >= 6,
@@ -5516,7 +5516,7 @@ void home_all_axes() { gcode_G28(true); }
         // Probe the points
 
        if (!_0p_calibration) {
-         if (!_7p_half_circle && !_7p_no_center) { // probe the center
+         if (!_7p_no_center) { // probe the center (P1=1, 2=1, 3=0, 4=1, 5=1, 6=0, 7=1, 8=1, 9=0)
             #if ENABLED(PROBE_MANUALLY)
               z_at_pt[0] += lcd_probe_pt(0, 0);
             #else
@@ -5524,7 +5524,7 @@ void home_all_axes() { gcode_G28(true); }
               if (isnan(z_at_pt[0])) return G33_CLEANUP();
             #endif
           }
-          if (_7p_calibration) { // probe extra center points
+          if (_7p_calibration) { // probe extra center points (P1=0, 2=0, 3=3, 4=3, 5=6, 6=6, 7=6, 8=9, 9=9)
             const uint8_t start = _7p_tripple_circle ? 17 : _7p_double_circle ? 16 : 13,
                            step = _7p_tripple_circle ? 2 : _7p_double_circle ? 3 : 6;
             for (int8_t axis = start; axis > 0; axis -= step) {
@@ -5538,7 +5538,7 @@ void home_all_axes() { gcode_G28(true); }
             }
             z_at_pt[0] /= float(_7p_extra_center ? probe_points + 2 : probe_points);
           }
-          if (!_1p_calibration) {  // probe the radius
+          if (!_1p_calibration) {  // probe the radius points (P1=0, 2=3, 3=6, 4=12, 5=18, 6=30, 7=42, 8=54 ,9=72)
             bool zig_zag1 = true, zig_zag2 = true,
                  zig_zag3 = _7p_zigzag_1_2 ? zig_zag1 : 
                  _7p_zigzag_1_4 ? (zig_zag1 && zig_zag2) : !(zig_zag1 && zig_zag2);
